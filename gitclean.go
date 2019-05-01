@@ -28,7 +28,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(dir)
 
 	repo, err := git.PlainOpen(dir)
 	if err != nil {
@@ -53,12 +52,18 @@ func main() {
 		return nil
 	})
 
+	if len(branches) == 0 {
+		fmt.Printf("No branches other than current branch(%s) exists", h.Name().Short())
+		os.Exit(0)
+	}
+
 	reader := bufio.NewReader(os.Stdin)
+
 	for _, r := range branches {
 		fmt.Printf("Remove branch %s? ('yes' to remove): ", r.Name().Short())
 		s, err := reader.ReadString('\n')
 		if err != nil {
-			fmt.Println("err", err)
+			fmt.Println("error reading input:", err)
 		}
 		s = strings.Replace(s, lineEnding, "", -1)
 
