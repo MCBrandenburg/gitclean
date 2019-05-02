@@ -10,6 +10,7 @@ import (
 
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
+	"gopkg.in/src-d/go-git.v4/plumbing/storer"
 )
 
 func main() {
@@ -63,18 +64,21 @@ func main() {
 	iter.ForEach(func(pr *plumbing.Reference) error {
 		_, ok := ignoreBranches[pr.Name().Short()]
 		if pr.Name() != h.Name() && !ok {
-			fmt.Printf("Remove branch %s? ('yes' to remove): ", pr.Name().Short())
+			fmt.Printf("Remove branch %s[y,n,q]? ", pr.Name().Short())
 			s, err := reader.ReadString('\n')
 			if err != nil {
 				fmt.Println("error reading input:", err)
 			}
 			s = strings.Replace(s, lineEnding, "", -1)
 
-			if s == "yes" {
+			switch s {
+			case "y":
 				fmt.Printf("removing %s\n", pr.Name().Short())
 				if err := repo.Storer.RemoveReference(pr.Name()); err != nil {
 					fmt.Println(err)
 				}
+			case "q":
+				return storer.ErrStop
 			}
 		}
 		return nil
