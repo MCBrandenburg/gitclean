@@ -61,6 +61,7 @@ func main() {
 	}
 
 	reader := bufio.NewReader(os.Stdin)
+	branchesToDelete := []plumbing.ReferenceName{}
 	iter.ForEach(func(pr *plumbing.Reference) error {
 		_, ok := ignoreBranches[pr.Name().Short()]
 		if pr.Name() != h.Name() && !ok {
@@ -73,14 +74,34 @@ func main() {
 
 			switch s {
 			case "y":
-				fmt.Printf("removing %s\n", pr.Name().Short())
-				if err := repo.Storer.RemoveReference(pr.Name()); err != nil {
-					fmt.Println(err)
-				}
+				branchesToDelete = append(branchesToDelete, pr.Name())
 			case "q":
+				fmt.Println("Exiting")
 				return storer.ErrStop
 			}
 		}
 		return nil
 	})
+
+	if len(branchesToDelete) > 0 {
+		fmt.Println("The following branches will be deleted:")
+		for _, r := range branchesToDelete {
+			fmt.Printf("\t%v\n", r.Short())
+		}
+		fmt.Print("Continue [y,n]? ")
+		s, err := reader.ReadString('\n')
+		if err != nil {
+			fmt.Println("error reading input:", err)
+		}
+		s = strings.Replace(s, lineEnding, "", -1)
+		if s == "y" {
+			for _, r := range branchesToDelete {
+				fmt.Printf("\tremoving %v\n", r.Short())
+				if err := repo.Storer.RemoveReference(r); err != nil {
+					fmt.Println("error deleting branch", err)
+				}
+			}
+		}
+	}
+	fmt.Println("Exiting")
 }
