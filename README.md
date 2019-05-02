@@ -20,16 +20,19 @@ GITCLEAN_IGNORE=master,development
 In the root of the project you want to clean, enter this in your prompt: `gitclean`
 
 ```
-❰~/g/s/g/M/gitclean(OK readme)❱(0)≻ git branch -l
-  demo
-  master
-* readme
-❰~/g/s/g/M/gitclean(OK readme)❱(0)≻ gitclean
-Remove branch demo? ('yes' to remove): yes
-removing demo
-Remove branch master? ('yes' to remove): no
-❰~/g/s/g/M/gitclean(OK readme)❱(0)≻ git branch -l
-  master
-* readme
-❰~/g/s/g/M/gitclean(OK readme)❱(0)≻
+❰~/g/s/g/M/test(OK master)❱(0)≻ git branch -l
+  development
+* master
+  test1
+  test2
+❰~/g/s/g/M/test(OK master)❱(0)≻ gitclean
+GITCLEAN_IGNORE set to 'master,development'
+Remove branch test1[y,n,q]? n
+Remove branch test2[y,n,q]? y
+removing test2
+❰~/g/s/g/M/test(OK master)❱(0)≻ git branch -l
+  development
+* master
+  test1
+❰~/g/s/g/M/test(OK master)❱(0)≻
 ```
