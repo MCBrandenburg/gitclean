@@ -17,6 +17,21 @@ func main() {
 		lineEnding string
 	)
 
+	ignoreBranches := make(map[string]interface{})
+
+	ignoreEnv := os.Getenv("GITCLEAN_IGNORE")
+
+	switch {
+	case ignoreEnv != "":
+		fmt.Printf("GITCLEAN_IGNORE set to '%s'\n", ignoreEnv)
+		ib := strings.Split(ignoreEnv, ",")
+		for _, i := range ib {
+			ignoreBranches[i] = nil
+		}
+	default:
+		fmt.Println("GITCLEAN_IGNORE not set")
+	}
+
 	switch runtime.GOOS {
 	case "windows":
 		lineEnding = "\r\n"
@@ -46,14 +61,16 @@ func main() {
 
 	branches := []*plumbing.Reference{}
 	iter.ForEach(func(pr *plumbing.Reference) error {
-		if pr.Name() != h.Name() {
+		_, ok := ignoreBranches[pr.Name().Short()]
+		fmt.Println("debug", pr.Name().Short(), ok)
+		if pr.Name() != h.Name() && !ok {
 			branches = append(branches, pr)
 		}
 		return nil
 	})
 
 	if len(branches) == 0 {
-		fmt.Printf("No branches other than current branch(%s) exists", h.Name().Short())
+		fmt.Printf("No branches other than current branch(%s) exists\n", h.Name().Short())
 		os.Exit(0)
 	}
 
