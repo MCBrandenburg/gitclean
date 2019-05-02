@@ -76,7 +76,7 @@ func main() {
 			case "y":
 				branchesToDelete = append(branchesToDelete, pr.Name())
 			case "q":
-				fmt.Println("Exiting")
+				branchesToDelete = nil
 				return storer.ErrStop
 			}
 		}
