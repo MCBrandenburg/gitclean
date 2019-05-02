@@ -59,36 +59,24 @@ func main() {
 		log.Fatal(err)
 	}
 
-	branches := []*plumbing.Reference{}
+	reader := bufio.NewReader(os.Stdin)
 	iter.ForEach(func(pr *plumbing.Reference) error {
 		_, ok := ignoreBranches[pr.Name().Short()]
-		fmt.Println("debug", pr.Name().Short(), ok)
 		if pr.Name() != h.Name() && !ok {
-			branches = append(branches, pr)
+			fmt.Printf("Remove branch %s? ('yes' to remove): ", pr.Name().Short())
+			s, err := reader.ReadString('\n')
+			if err != nil {
+				fmt.Println("error reading input:", err)
+			}
+			s = strings.Replace(s, lineEnding, "", -1)
+
+			if s == "yes" {
+				fmt.Printf("removing %s\n", pr.Name().Short())
+				if err := repo.Storer.RemoveReference(pr.Name()); err != nil {
+					fmt.Println(err)
+				}
+			}
 		}
 		return nil
 	})
-
-	if len(branches) == 0 {
-		fmt.Printf("No branches other than current branch(%s) exists\n", h.Name().Short())
-		os.Exit(0)
-	}
-
-	reader := bufio.NewReader(os.Stdin)
-
-	for _, r := range branches {
-		fmt.Printf("Remove branch %s? ('yes' to remove): ", r.Name().Short())
-		s, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println("error reading input:", err)
-		}
-		s = strings.Replace(s, lineEnding, "", -1)
-
-		if s == "yes" {
-			fmt.Printf("removing %s\n", r.Name().Short())
-			if err := repo.Storer.RemoveReference(r.Name()); err != nil {
-				fmt.Println(err)
-			}
-		}
-	}
 }
