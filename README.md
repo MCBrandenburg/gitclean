@@ -6,6 +6,16 @@ Guided Branch Cleanup Utility
 
 `go get -u github.com/MCBrandenburg/gitclean`
 
+# Configuration
+
+You can set standard branches to be ignored using the environment variable `GITCLEAN_IGNORE`
+
+Example:
+
+```
+GITCLEAN_IGNORE=master,development
+```
+
 # Usage
 In the root of the project you want to clean, enter this in your prompt: `gitclean`
 
