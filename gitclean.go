@@ -67,7 +67,7 @@ func main() {
 	iter.ForEach(func(pr *plumbing.Reference) error {
 		_, ok := ignoreBranches[pr.Name().Short()]
 		if pr.Name() != h.Name() && !ok {
-			fmt.Printf("Remove branch %s[y,n,q]? ", pr.Name().Short())
+			fmt.Printf("Remove branch %s[y,N,q]? ", pr.Name().Short())
 			s, err := reader.ReadString('\n')
 			if err != nil {
 				fmt.Println("error reading input:", err)
@@ -90,7 +90,7 @@ func main() {
 		for _, r := range branchesToDelete {
 			fmt.Printf("\t%v\n", r.Short())
 		}
-		fmt.Print("Continue [y,n]? ")
+		fmt.Print("Continue [y,N]? ")
 		s, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println("error reading input:", err)
