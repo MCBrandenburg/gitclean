@@ -30,11 +30,11 @@ In the root of the project you want to clean, enter this in your prompt: `gitcle
 * test3
 ❰~/g/s/g/M/test(OK test3)❱(0)≻ gitclean
 GITCLEAN_IGNORE set to 'master,development'
-Remove branch test1[y,n,q]? y
-Remove branch test2[y,n,q]? n
+Remove branch test1[y,N,q]? y
+Remove branch test2[y,N,q]? n
 The following branches will be deleted:
 	test1
-Continue [y,n]? y
+Continue [y,N]? y
 	removing test1
 Exiting
 ❰~/g/s/g/M/test(OK test3)❱(0)≻ git branch -l
@@ -55,8 +55,8 @@ Exiting
 * test3
 ❰~/g/s/g/M/testquit(OK test3)❱(0)≻ gitclean
 GITCLEAN_IGNORE set to 'master,development'
-Remove branch test1[y,n,q]? y
-Remove branch test2[y,n,q]? q
+Remove branch test1[y,N,q]? y
+Remove branch test2[y,N,q]? q
 Exiting
 ❰~/g/s/g/M/testquit(OK test3)❱(0)≻ git branch -l
   development
@@ -77,12 +77,12 @@ Exiting
 * test3
 ❰~/g/s/g/M/testno(OK test3)❱(0)≻ gitclean
 GITCLEAN_IGNORE set to 'master,development'
-Remove branch test1[y,n,q]? y
-Remove branch test2[y,n,q]? y
+Remove branch test1[y,N,q]? y
+Remove branch test2[y,N,q]? y
 The following branches will be deleted:
 	test1
 	test2
-Continue [y,n]? n
+Continue [y,N]? n
 Exiting
 ❰~/g/s/g/M/testno(OK test3)❱(0)≻ git branch -l
   development
