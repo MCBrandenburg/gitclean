@@ -13,14 +13,12 @@ import (
 	"gopkg.in/src-d/go-git.v4/plumbing/storer"
 )
 
-type emptyStruct struct{}
-
 func main() {
 	var (
 		lineEnding string
 	)
 
-	ignoreBranches := make(map[string]emptyStruct)
+	ignoreBranches := make(map[string]struct{})
 
 	ignoreEnv := os.Getenv("GITCLEAN_IGNORE")
 
@@ -29,7 +27,7 @@ func main() {
 		fmt.Printf("GITCLEAN_IGNORE set to '%s'\n", ignoreEnv)
 		ib := strings.Split(ignoreEnv, ",")
 		for _, i := range ib {
-			ignoreBranches[i] = emptyStruct{}
+			ignoreBranches[i] = struct{}{}
 		}
 	default:
 		fmt.Println("GITCLEAN_IGNORE not set")
