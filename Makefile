@@ -1,4 +1,4 @@
-build-all: build-darwin build-freebsd build-linux build-windows
+build-all: clean-dist build-darwin build-freebsd build-linux build-windows
 
 build-darwin:
 	GOOS=darwin GOARCH=amd64 go build -o ./dist/gitclean
