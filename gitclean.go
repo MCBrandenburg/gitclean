@@ -62,7 +62,7 @@ func main() {
 
 	reader := bufio.NewReader(os.Stdin)
 	branchesToDelete := []plumbing.ReferenceName{}
-	iter.ForEach(func(pr *plumbing.Reference) error {
+	_ = iter.ForEach(func(pr *plumbing.Reference) error {
 		_, ok := ignoreBranches[pr.Name().Short()]
 		if pr.Name() != h.Name() && !ok {
 			fmt.Printf("Remove branch %s[y,N,q]? ", pr.Name().Short())
